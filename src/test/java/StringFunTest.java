@@ -25,30 +25,24 @@ public class StringFunTest {
     @Test
     public void testParse() {
 
-        ArrayList<String> expected = new ArrayList<>();
-        expected.add("id");
-        expected.add("created");
-        expected.add("employee");
-        expected.add("-id");
-        expected.add("-firstname");
-        expected.add("-employeeType");
-        expected.add("--id");
-        expected.add("-lastname");
-        expected.add("location");
+        ArrayList<StringFun.ParsedData> expected = new ArrayList<>();
+        expected.add(new StringFun.ParsedData("","id") );
+        expected.add(new StringFun.ParsedData("","created") );
+        expected.add(new StringFun.ParsedData("","employee") );
+        expected.add(new StringFun.ParsedData("-","id"));
+        expected.add(new StringFun.ParsedData("-","firstname"));
+        expected.add(new StringFun.ParsedData( "-","employeeType"));
+        expected.add(new StringFun.ParsedData("--","id"));
+        expected.add(new StringFun.ParsedData("-","lastname"));
+        expected.add(new StringFun.ParsedData("","location"));
 
-        List<String> results = parser.parseString(testString);
+        List<StringFun.ParsedData> results = parser.parseString(testString);
         assertNotNull(results);
         assertTrue(results.size() == 9);
         assertEquals(expected, results);
 
     }
 
-    @Test
-    public void testSortedParse(){
-        List<String> results = parser.sortParseString(testString);
-        assertNotNull(results);
-        assertTrue(results.size() == 9);
 
-    }
 
 }
