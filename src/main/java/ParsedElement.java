@@ -15,8 +15,13 @@ class ParsedElement implements Comparable<ParsedElement> {
 
     ParsedElement(String input, String parent_input) {
         this.parent = parent_input;
-        String element_string = StringFun.EMPTY_STRING;
-        String parent_string = StringFun.EMPTY_STRING;
+        doParse(input);
+    }
+
+
+    private void doParse(String input){
+        String element = StringFun.EMPTY_STRING;
+        String parent = StringFun.EMPTY_STRING;
         int open_parenthesis = 0;
 
         for (char character : input.toCharArray()) {
@@ -25,18 +30,18 @@ class ParsedElement implements Comparable<ParsedElement> {
                 case StringFun.OPEN_PAREN:
                     ++open_parenthesis;
                     if (open_parenthesis > 2) {
-                        element_string += character;
+                        element += character;
                     }
                     break;
 
                 case StringFun.CLOSE_PAREN:
                     --open_parenthesis;
                     if (open_parenthesis > 1) {
-                        element_string += character;
+                        element += character;
                     } else if (open_parenthesis == 0) {
                         // Last element
                         String contents = StringFun.EMPTY_STRING;
-                        ParsedElement sub_element = new ParsedElement(contents, parent_string);
+                        ParsedElement sub_element = new ParsedElement(contents, parent);
                         children.add(sub_element);
                     }
                     break;
@@ -45,28 +50,30 @@ class ParsedElement implements Comparable<ParsedElement> {
                     if (open_parenthesis == 1) {
                         // Append element to children
                         String contents = StringFun.EMPTY_STRING;
-                        if (!element_string.equals(StringFun.EMPTY_STRING)) {
-                            contents = StringFun.OPEN_PAREN + element_string + StringFun.CLOSE_PAREN;
+                        if (!element.equals(StringFun.EMPTY_STRING)) {
+                            contents = StringFun.OPEN_PAREN + element + StringFun.CLOSE_PAREN;
                         }
 
-                        ParsedElement sub_element = new ParsedElement(contents, parent_string);
+                        ParsedElement sub_element = new ParsedElement(contents, parent);
                         children.add(sub_element);
-                        element_string = StringFun.EMPTY_STRING;
-                        parent_string = StringFun.EMPTY_STRING;
+                        element = StringFun.EMPTY_STRING;
+                        parent = StringFun.EMPTY_STRING;
                     } else {
-                        element_string += character;
+                        element += character;
                     }
                     break;
 
                 default:
                     if (open_parenthesis == 1) {
-                        parent_string += character;
+                        parent += character;
                     } else {
-                        element_string += character;
+                        element += character;
                     }
             }
         }
+
     }
+
 
     @Override
     public int compareTo(ParsedElement o) {
@@ -97,6 +104,14 @@ class ParsedElement implements Comparable<ParsedElement> {
 
     private String parent;
     private ArrayList<ParsedElement> children = new ArrayList<>();
+
+    String getParent() {
+        return parent;
+    }
+
+    ArrayList<ParsedElement> getChildren() {
+        return children;
+    }
 
     // Format and print the parent element and its children
     private void PrintElementsHelper(int level, boolean sorted) {
