@@ -10,3 +10,15 @@ To run both solutions use PrintDriver.  StringFun is included just to show thoug
 line of reasoning about the problem.  I do have a simple unit test for 
 ParsedElement that confirms it was parsed correctly.
 
+
+I have included the gradle wrapper so to build it
+
+./gradlew clean build
+or 
+gradle clean build (Windows)
+
+
+To run this after you have built it locally
+
+java -cp ./stringFun.jar PrintDriver
+
